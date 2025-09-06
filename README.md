@@ -1,199 +1,48 @@
-# Guia Completo de Streams e Lambda Expressions em Java (Java 8+)
+# Java Core Concepts
 
-## 1. Introdução
+📚 Repositório de estudos sobre os principais conceitos do **Java**, organizado em guias temáticos.  
+A ideia é ter um material direto, prático e confiável para consulta rápida.
 
-Com o Java 8, duas grandes funcionalidades foram adicionadas:
-**expressões lambda** e a **Streams API**.\
-Esses recursos permitem escrever código mais conciso, legível e
-eficiente, aproveitando conceitos de programação funcional.
+---
 
-------------------------------------------------------------------------
+## 📖 Estrutura dos Guias
 
-## 2. Expressões Lambda
+### 1. Fundamentos
+- [Sintaxe Básica](./01-basics/guia-sintaxe.md)
+- [Tipos de Dados](./01-basics/guia-tipos.md)
+- [Orientação a Objetos](./01-basics/guia-oo.md)
 
-### 2.1. O que são?
+### 2. Collections
+- [Coleções em Java](./02-collections/guia-collections.md)
 
-Uma expressão **lambda** é uma forma curta de implementar interfaces
-funcionais (interfaces com **um único método abstrato**).\
-Sintaxe básica:
+### 3. Generics
+- [Generics e Tipagem](./03-generics/guia-generics.md)
 
-``` java
-(parâmetros) -> expressão
-(parâmetros) -> { bloco de código }
-```
+### 4. Exceptions
+- [Tratamento de Exceções](./04-exceptions/guia-exceptions.md)
 
-### 2.2. Exemplo
+### 5. I/O
+- [Manipulação de Arquivos](./05-io/guia-manipulacao-arquivos-java.md)
 
-``` java
-// Antes do Java 8
-new Thread(new Runnable() {
-    public void run() {
-        System.out.println("Executando...");
-    }
-}).start();
+### 6. Concorrência
+- [Threads e Concorrência](./06-concurrency/guia-threads.md)
 
-// Com lambda
-new Thread(() -> System.out.println("Executando...")).start();
-```
+### 7. Programação Funcional
+- [Streams e Lambda Expressions](./07-functional/guia-streams-lambdas-java.md)
 
-### 2.3. Interfaces Funcionais
+### 8. Avançado
+- [Reflection](./08-advanced/guia-reflection.md)
 
--   **Exemplos já disponíveis no Java:**
-    -   `Runnable`\
-    -   `Comparator<T>`\
-    -   `Predicate<T>` (retorna boolean)\
-    -   `Function<T,R>` (transforma um tipo em outro)\
-    -   `Consumer<T>` (consome um valor, não retorna)\
-    -   `Supplier<T>` (fornece um valor, sem entrada)
+---
 
-``` java
-Predicate<String> isEmpty = s -> s.isEmpty();
-Function<String, Integer> length = s -> s.length();
-```
+## 🎯 Objetivo
+- Consolidar os principais tópicos do **Java Core** em um só lugar.  
+- Servir como referência rápida para desenvolvedores.  
+- Criar uma base sólida para avançar em frameworks como **Spring**, **Jakarta EE** e outros.
 
-------------------------------------------------------------------------
+---
 
-## 3. Streams API
-
-### 3.1. O que são Streams?
-
-Uma forma de **processar coleções de dados** (listas, arrays, etc.) de
-maneira declarativa e funcional.\
-Fluxo típico:\
-1. Criar um Stream (`list.stream()`)\
-2. Aplicar operações intermediárias (`filter`, `map`, `sorted`, ...)\
-3. Encerrar com uma operação terminal (`collect`, `forEach`, `reduce`,
-...)
-
-### 3.2. Exemplo simples
-
-``` java
-List<String> nomes = Arrays.asList("Ana", "Pedro", "Carlos");
-
-nomes.stream()
-     .filter(n -> n.startsWith("C"))
-     .map(String::toUpperCase)
-     .forEach(System.out::println);
-// Saída: CARLOS
-```
-
-------------------------------------------------------------------------
-
-## 4. Operações de Stream
-
-### 4.1. Intermediárias (retornam outro Stream)
-
--   `filter(Predicate)` → filtra elementos\
--   `map(Function)` → transforma cada elemento\
--   `sorted()` → ordena elementos\
--   `distinct()` → remove duplicados\
--   `limit(n)` / `skip(n)` → pega ou pula elementos
-
-### 4.2. Terminais (encerram o Stream)
-
--   `forEach(Consumer)` → itera sobre elementos\
--   `collect(Collectors.toList())` → coleta resultado em lista\
--   `reduce()` → reduz a um único valor\
--   `count()` → conta elementos\
--   `findFirst()`, `findAny()` → busca elemento
-
-### 4.3. Exemplos
-
-``` java
-List<Integer> numeros = Arrays.asList(1, 2, 3, 4, 5, 6);
-
-// Filtrar pares e somar
-int soma = numeros.stream()
-                  .filter(n -> n % 2 == 0)
-                  .mapToInt(n -> n)
-                  .sum(); // 12
-
-// Converter lista em outra lista
-List<String> upper = nomes.stream()
-                          .map(String::toUpperCase)
-                          .collect(Collectors.toList());
-```
-
-------------------------------------------------------------------------
-
-## 5. Parallel Streams
-
-Permite processar em paralelo, aproveitando múltiplos núcleos.
-
-``` java
-List<Integer> numeros = Arrays.asList(1, 2, 3, 4, 5, 6);
-
-numeros.parallelStream()
-       .forEach(System.out::println);
-```
-
-⚠️ Use com cuidado: pode haver problemas de sincronização ou ordem
-indesejada.
-
-------------------------------------------------------------------------
-
-## 6. Benefícios
-
--   Código mais **legível** e **declarativo**.\
--   Menos loops manuais (`for`, `while`).\
--   Suporte simplificado a **processamento paralelo**.\
--   Integração com **interfaces funcionais** já existentes.
-
-------------------------------------------------------------------------
-
-## 7. Exemplo Completo
-
-``` java
-import java.util.*;
-import java.util.stream.*;
-
-public class StreamsLambdaExample {
-    public static void main(String[] args) {
-        List<String> nomes = Arrays.asList("Ana", "Pedro", "Carlos", "João", "Amanda");
-
-        // Exemplo: Filtrar nomes com A, transformar em maiúsculas e ordenar
-        List<String> resultado = nomes.stream()
-                                      .filter(n -> n.startsWith("A"))
-                                      .map(String::toUpperCase)
-                                      .sorted()
-                                      .collect(Collectors.toList());
-
-        System.out.println(resultado); // [AMANDA, ANA]
-    }
-}
-```
-
-------------------------------------------------------------------------
-
-## 8. Resumo Rápido (Tabela)
-
-  ----------------------------------------------------------------------------------
-  Recurso         Exemplo                           Descrição
-  --------------- --------------------------------- --------------------------------
-  Lambda          `(x, y) -> x + y`                 Função anônima
-
-  Predicate       `s -> s.isEmpty()`                Retorna boolean
-
-  Function        `s -> s.length()`                 Transforma de um tipo para outro
-
-  Stream criação  `list.stream()`                   Cria um Stream a partir da lista
-
-  Intermediária   `.filter(n -> n > 0)`             Retorna outro Stream
-
-  Terminal        `.collect(Collectors.toList())`   Gera resultado final
-
-  Paralelo        `list.parallelStream()`           Processa em paralelo
-  ----------------------------------------------------------------------------------
-
-------------------------------------------------------------------------
-
-## 9. Referências
-
--   [Oracle Docs --
-    Streams](https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html)\
--   [Baeldung -- Guide to Java
-    Streams](https://www.baeldung.com/java-8-streams)\
--   [GeeksforGeeks -- Stream API in
-    Java](https://www.geeksforgeeks.org/stream-in-java/)\
--   [Oracle Docs -- Lambda
-    Expressions](https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html)
+## 🚀 Como usar
+1. Clone este repositório  
+   ```bash
+   git clone https://github.com/seu-usuario/java-core-concepts.git
