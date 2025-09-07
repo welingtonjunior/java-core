@@ -41,8 +41,3 @@ A ideia é ter um material direto, prático e confiável para consulta rápida.
 - Criar uma base sólida para avançar em frameworks como **Spring**, **Jakarta EE** e outros.
 
 ---
-
-## 🚀 Como usar
-1. Clone este repositório  
-   ```bash
-   git clone https://github.com/seu-usuario/java-core-concepts.git
